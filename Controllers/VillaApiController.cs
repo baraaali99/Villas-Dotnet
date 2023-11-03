@@ -92,6 +92,8 @@ public class VillaApiController : ControllerBase
             await _dbVilla.CreateAsync(model);
             _response.Result = _mapper.Map<VillaDto>(model);
             _response.StatusCode = HttpStatusCode.Created;
+            _response.IsSuccess = true;
+            
             return Ok(_response);
         }catch (Exception e)
         {
@@ -116,7 +118,9 @@ public class VillaApiController : ControllerBase
 
             if (villa == null)
             {
-                return NotFound();
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                return NotFound(_response);
             }
 
             await _dbVilla.RemoveAsync(villa);
@@ -137,6 +141,16 @@ public class VillaApiController : ControllerBase
         var _response = new ApiResponse();
         try
         {
+            // in case i am changing the name to a name that already exists!
+            if (await _dbVilla.GetAsync(u => u.Name.ToLower() == villaUpdateDto.Name.ToLower()) != null)
+            {
+                _response.ErrorMessages = new List<string>() { "Villa name already Exists!" };
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                //ModelState.AddModelError("CustomError", "Villa name already Exists!");
+                return BadRequest(_response);
+            }
+
             if (villaUpdateDto == null)
             {
                 return BadRequest();

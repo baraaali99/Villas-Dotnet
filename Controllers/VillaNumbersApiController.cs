@@ -13,11 +13,13 @@ public class VillaNumbersApiController : ControllerBase
 {
     private readonly IVillaNumberRepository _villaNumberRepository;
     private readonly IMapper _mapper;
+    private readonly IVillaRepository _villaRepository;
 
-    public VillaNumbersApiController(IVillaNumberRepository villaNumberRepository, IMapper mapper)
+    public VillaNumbersApiController(IVillaNumberRepository villaNumberRepository, IMapper mapper,IVillaRepository villaRepository)
     {
         _villaNumberRepository = villaNumberRepository;
         _mapper = mapper;
+        _villaRepository = villaRepository;
     }
 
     [HttpGet]
@@ -26,11 +28,11 @@ public class VillaNumbersApiController : ControllerBase
         var response = new ApiResponse();
         try
         {
-            IEnumerable<VillaNumber> villaNumbers = await _villaNumberRepository.GetAllAsync();
-            response.Result = _mapper.Map<VillaNumber>(villaNumbers);
+            IEnumerable<VillaNumber> villaList = await _villaNumberRepository.GetAllAsync();
+            response.Result = _mapper.Map<List<VillaNumberDto>>(villaList);
             response.StatusCode = HttpStatusCode.OK;
             response.IsSuccess = true;
-            return Ok(response);
+            return  Ok(response);
         }
         catch (Exception e)
         {
@@ -87,17 +89,24 @@ public class VillaNumbersApiController : ControllerBase
                 return BadRequest(response);
             }
 
+            if (await _villaRepository.GetAsync(u => u.Id == villaNumberDto.VillaID) == null)
+            {
+                ModelState.AddModelError("CustomError", "invalid Id!");
+                return BadRequest(ModelState);
+            }
             if (await _villaNumberRepository.GetAsync(u => u.VillaNo == villaNumberDto.VillaNo) != null)
             {
-                ModelState.AddModelError("CustomError", "Villa already Exists!");
+                ModelState.AddModelError("CustomError", "Villa number already exists!");
                 return BadRequest(ModelState);
             }
 
             VillaNumber model = _mapper.Map<VillaNumber>(villaNumberDto);
             await _villaNumberRepository.CreateAsync(model);
+            
             response.Result = _mapper.Map<VillaNumberDto>(model);
             response.StatusCode = HttpStatusCode.Created;
-
+            response.IsSuccess = true;
+            
             return Ok(response);
         }
         catch (Exception e)
@@ -150,7 +159,7 @@ public class VillaNumbersApiController : ControllerBase
                 return BadRequest(response);
             }
 
-            VillaNumber model = await _villaNumberRepository.GetAsync(u => u.VillaNo == id);
+            VillaNumber model = await _villaNumberRepository.GetAsync(u => u.VillaNo == id, false);
             if (model == null)
             {
                 response.StatusCode = HttpStatusCode.BadRequest;

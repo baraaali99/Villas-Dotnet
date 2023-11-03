@@ -95,9 +95,25 @@ namespace firstDotnetProject.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("VillaId")
+                        .HasColumnType("int");
+
                     b.HasKey("VillaNo");
 
+                    b.HasIndex("VillaId");
+
                     b.ToTable("VillaNumbers");
+                });
+
+            modelBuilder.Entity("firstDotnetProject.VillaNumber", b =>
+                {
+                    b.HasOne("firstDotnetProject.Villa", "Villa")
+                        .WithMany()
+                        .HasForeignKey("VillaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Villa");
                 });
 #pragma warning restore 612, 618
         }

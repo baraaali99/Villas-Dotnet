@@ -107,4 +107,31 @@ public class VillaNumbersApiController : ControllerBase
         }
         return response;
     }
+
+    [HttpDelete ("{id:int}")]
+    public async Task<ActionResult<ApiResponse>> DeleteVilla(int id)
+    {
+        ApiResponse response = new ApiResponse();
+
+        try
+        {
+            var villaNumber = await _villaNumberRepository.GetAsync(u => u.VillaNo == id);
+
+            if (villaNumber == null)
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+                return BadRequest(response);
+            }
+
+            await _villaNumberRepository.RemoveAsync(villaNumber);
+            response.StatusCode = HttpStatusCode.NoContent;
+            response.IsSuccess = true;
+        }
+        catch (Exception e)
+        {
+            response.IsSuccess = false;
+            response.ErrorMessages = new List<string>() { e.ToString() };
+        }
+        return response;
+    }
 }

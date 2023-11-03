@@ -126,12 +126,51 @@ public class VillaNumbersApiController : ControllerBase
             await _villaNumberRepository.RemoveAsync(villaNumber);
             response.StatusCode = HttpStatusCode.NoContent;
             response.IsSuccess = true;
+            
+            return Ok(response);
         }
         catch (Exception e)
         {
             response.IsSuccess = false;
             response.ErrorMessages = new List<string>() { e.ToString() };
         }
+        return response;
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<ApiResponse>> UpdateVilla(int id, [FromBody] VillaNumberUpdateDto villaNumberUpdateDto)
+    {
+        ApiResponse response = new ApiResponse();
+
+        try
+        {
+            if (villaNumberUpdateDto == null)
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+                return BadRequest(response);
+            }
+
+            VillaNumber model = await _villaNumberRepository.GetAsync(u => u.VillaNo == id);
+            if (model == null)
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+                return BadRequest(response);
+            }
+
+            villaNumberUpdateDto.VillaNo = id;
+            model = _mapper.Map<VillaNumber>(villaNumberUpdateDto);
+            await _villaNumberRepository.UpdateAsync(model);
+            response.StatusCode = HttpStatusCode.NoContent;
+            response.IsSuccess = true;
+
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            response.IsSuccess = false;
+            response.ErrorMessages = new List<string>() { e.ToString() };
+        }
+
         return response;
     }
 }

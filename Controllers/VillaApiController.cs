@@ -59,6 +59,7 @@ public class VillaApiController : ControllerBase
 
             _response.Result = _mapper.Map<VillaDto>(villa);
             _response.StatusCode = HttpStatusCode.OK;
+            _response.IsSuccess = true;
             return Ok(_response);
         }catch (Exception e)
         {

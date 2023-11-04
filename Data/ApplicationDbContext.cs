@@ -9,8 +9,8 @@ public class ApplicationDbContext : DbContext
         
     }
     public DbSet<Villa> Villas { get; set; }
-    
     public DbSet<VillaNumber> VillaNumbers { get; set; }
+    public DbSet<LocalUser> LocalUsers { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Villa>().HasData(

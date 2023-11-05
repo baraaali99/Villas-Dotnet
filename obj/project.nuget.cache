@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "uXR+bmkLVWYD3rmvQkKPyVor1OUdL4DHLiEwhcL25qkDKJ2apbgVLfWyfU2fIw7FjwCBDoNc/zitcVFGxarQpg==",
+  "dgSpecHash": "ifJ8RGL/qWUFuy/LqgOc+q9ujth8JQkvSk8OeJl6Yk2qxRTH2qZCW61pjhkJFrTB6Db/oRC6kboQ7vGUWM5iPg==",
   "success": true,
   "projectFilePath": "D:\\computer science\\firstDotnet\\firstDotnetProject\\firstDotnetProject.csproj",
   "expectedPackageFiles": [
@@ -9,8 +9,11 @@
     "C:\\Users\\baraa\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\baraa\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
     "C:\\Users\\baraa\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\baraa\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.12\\microsoft.aspnetcore.authentication.jwtbearer.7.0.12.nupkg.sha512",
     "C:\\Users\\baraa\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\7.0.13\\microsoft.aspnetcore.jsonpatch.7.0.13.nupkg.sha512",
     "C:\\Users\\baraa\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\7.0.13\\microsoft.aspnetcore.mvc.newtonsoftjson.7.0.13.nupkg.sha512",
+    "C:\\Users\\baraa\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning\\5.1.0\\microsoft.aspnetcore.mvc.versioning.5.1.0.nupkg.sha512",
+    "C:\\Users\\baraa\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning.apiexplorer\\5.1.0\\microsoft.aspnetcore.mvc.versioning.apiexplorer.5.1.0.nupkg.sha512",
     "C:\\Users\\baraa\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.12\\microsoft.aspnetcore.openapi.7.0.12.nupkg.sha512",
     "C:\\Users\\baraa\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\baraa\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

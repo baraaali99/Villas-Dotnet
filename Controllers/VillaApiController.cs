@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using firstDotnetProject.Repository.iRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ public class VillaApiController : ControllerBase
     }
     
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<ApiResponse>> GetVillas()
     {
         var _response = new ApiResponse();
@@ -38,6 +40,7 @@ public class VillaApiController : ControllerBase
     }
     
     [HttpGet("{id:int}", Name = "GetVilla")]
+    [Authorize (Roles = "admin")]
     public async Task<ActionResult<ApiResponse>> GetVilla(int id)
     {
         var _response = new ApiResponse();
@@ -70,6 +73,7 @@ public class VillaApiController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize (Roles = "admin")]
     public async Task<ActionResult<ApiResponse>> CreateVilla([FromBody] VillaCreateDto villaCreateDto)
     {
         var _response = new ApiResponse();
@@ -104,6 +108,7 @@ public class VillaApiController : ControllerBase
     }
 
     [HttpDelete("{id:int}" , Name = "DeleteVilla")]
+    [Authorize(Roles = "CUSTOM")]
     public async Task<ActionResult<ApiResponse>> DeleteVilla(int id)
     {
         var _response = new ApiResponse();
@@ -136,6 +141,7 @@ public class VillaApiController : ControllerBase
     }
 
     [HttpPut("{id:int}", Name = "UpdateVilla")]
+    [Authorize(Roles = "CUSTOM")]
     public async Task<ActionResult<ApiResponse>> UpdateVilla(int id, [FromBody] VillaUpdateDto villaUpdateDto)
     {
         var _response = new ApiResponse();

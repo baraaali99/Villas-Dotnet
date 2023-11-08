@@ -83,3 +83,5 @@ D:\computer science\firstDotnet\firstDotnetProject\bin\Debug\net7.0\Microsoft.En
 D:\computer science\firstDotnet\firstDotnetProject\bin\Debug\net7.0\AutoMapper.dll
 D:\computer science\firstDotnet\firstDotnetProject\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\computer science\firstDotnet\firstDotnetProject\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\computer science\firstDotnet\firstDotnetProject\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.Versioning.dll
+D:\computer science\firstDotnet\firstDotnetProject\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer.dll

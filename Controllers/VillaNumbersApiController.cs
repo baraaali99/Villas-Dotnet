@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace firstDotnetProject.Controllers;
 
 
-    [Route("api/VillaNumbers")]
+    [Route("api/v{version:apiVersion}/VillaNumbers")]
     [ApiController]
+    [ApiVersion("1.0")]
 public class VillaNumbersApiController : ControllerBase
 {
     private readonly IVillaNumberRepository _villaNumberRepository;

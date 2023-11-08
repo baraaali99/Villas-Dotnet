@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace firstDotnetProject.Controllers;
 
-    [Route("Api/UserAuth")]
+    [Route("Api/v{version:apiVersion}/UserAuth")]
     [ApiController]
+    [ApiVersion("1.0")]
 public class UserController : Controller
 {
     private readonly IUserRepository _userRepo;
@@ -18,6 +19,7 @@ public class UserController : Controller
     }
 
     [HttpPost("login")]
+    [ResponseCache(Duration = 30)]
     public async Task<ActionResult> Login([FromBody] LoginRequestDto model)
     {
         var loginResponse = await _userRepo.Login(model);

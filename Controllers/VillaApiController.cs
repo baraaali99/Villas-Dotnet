@@ -1,14 +1,19 @@
 using System.Net;
+using System.Runtime.InteropServices;
 using AutoMapper;
 using firstDotnetProject.Repository.iRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace firstDotnetProject.Controllers;
    // [Route("api/[controller]")]
-    [Route("api/VillaApi")]
+    [Route("api/v{version:apiVersion}/VillaApi")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
 public class VillaApiController : ControllerBase
 {
     private readonly IVillaRepository _dbVilla;
@@ -21,7 +26,48 @@ public class VillaApiController : ControllerBase
     
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<ApiResponse>> GetVillas()
+    [MapToApiVersion("1.0")]
+    [ResponseCache(CacheProfileName = "Default30")]
+    public async Task<ActionResult<ApiResponse>> GetVillas([FromQuery(Name = "filterOccupancy")]int? occupancy,
+    [FromQuery] string? search, int pageSize = 3, int pageNumber = 1)
+    {
+        var _response = new ApiResponse();
+        try
+        {
+            IEnumerable<Villa> villaList;
+            if (occupancy > 0)
+            {
+                villaList = await _dbVilla.GetAllAsync(u => u.Occupancy == occupancy 
+                    ,pageSize:pageSize , pageNumber:pageNumber);
+            }
+            else
+            {
+                villaList = await _dbVilla.GetAllAsync(pageSize:pageSize , pageNumber:pageNumber);
+                //villaList = await _dbVilla.GetAllAsync();
+            }
+            if (!string.IsNullOrEmpty(search))
+            {
+                villaList = villaList.Where(u => u.Name.ToLower().Contains(search)).ToList();
+            }
+
+            Pagination pagination = new() { PageNumber = pageNumber, PageSize = pageSize };
+            Response.Headers.Add("X-Pagination",JsonSerializer.Serialize(pagination));
+            _response.Result = _mapper.Map<List<VillaDto>>(villaList);
+            _response.StatusCode = HttpStatusCode.OK;
+            _response.IsSuccess = true;
+            return  Ok(_response);
+        }catch (Exception e)
+        {
+            _response.IsSuccess = false;
+            _response.ErrorMessages = new List<string>() { e.ToString() };
+        }
+        return _response;
+    }
+    
+    [HttpGet]
+    [Authorize]
+    [MapToApiVersion("2.0")]
+    public async Task<ActionResult<ApiResponse>> Get()
     {
         var _response = new ApiResponse();
         try
@@ -38,7 +84,6 @@ public class VillaApiController : ControllerBase
         }
         return _response;
     }
-    
     [HttpGet("{id:int}", Name = "GetVilla")]
     [Authorize (Roles = "admin")]
     public async Task<ActionResult<ApiResponse>> GetVilla(int id)
